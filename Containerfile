@@ -3,43 +3,14 @@ FROM scratch AS ctx
 COPY --chmod=0755 build-files /
 
 # Base Image
-FROM quay.io/fedora/fedora-bootc:latest
+FROM quay.io/fedora/fedora-kinoite:43
 
 # Build files
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
-    /ctx/00-base.sh
-
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=tmpfs,dst=/var \
-    --mount=type=tmpfs,dst=/tmp \
-    /ctx/01-pkg-groups.sh
-
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=tmpfs,dst=/var \
-    --mount=type=tmpfs,dst=/tmp \
-    /ctx/02-additonal-pkgs.sh
-
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=tmpfs,dst=/var \
-    --mount=type=tmpfs,dst=/tmp \
-    /ctx/03-nix.sh
-
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=tmpfs,dst=/var \
-    --mount=type=tmpfs,dst=/tmp \
-    /ctx/04-flatpak.sh
-
-COPY systemd-files/* /etc/systemd/system/
-
-RUN dnf5 in -y snapd && dnf5 clean all
-
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=tmpfs,dst=/var \
-    --mount=type=tmpfs,dst=/tmp \
-    /ctx/05-systemd.sh
+    /ctx/setup.sh
 
 # Copy Homebrew files from the brew image and enable
 COPY --from=ghcr.io/ublue-os/brew:latest /system_files /
