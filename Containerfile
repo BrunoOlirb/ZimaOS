@@ -34,6 +34,8 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
 
 COPY systemd-files/* /etc/systemd/system/
 
+RUN dnf5 in -y snapd && dnf5 clean all
+
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=tmpfs,dst=/var \
     --mount=type=tmpfs,dst=/tmp \
@@ -49,7 +51,6 @@ RUN --mount=type=cache,dst=/var/cache \
     /usr/bin/systemctl preset brew-update.timer && \
     /usr/bin/systemctl preset brew-upgrade.timer
 
-RUN dnf5 in -y snapd && dnf5 clean all
 
 ### LINTING
 ## Verify final image and contents are correct.
