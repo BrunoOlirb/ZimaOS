@@ -8,6 +8,7 @@ shopt -s nullglob
 
 mkdir -p /var/roothome
 
+rm -rf opt
 mkdir -p /var/opt
 ln -s -T /var/opt /opt
 
