@@ -31,3 +31,5 @@ mask_services=(
 
 systemctl enable "${system_services[@]}"
 systemctl mask "${mask_services[@]}"
+
+systemctl set-default graphical.target
