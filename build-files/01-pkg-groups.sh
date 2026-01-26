@@ -27,58 +27,106 @@ groups=(
   fonts
 )
 
-exclude-groups=(
-  amd*,
-  nvidia*,
-  chrony,
-  flatpak,
-  flatpak-builder,
-  toolbox,
-  wine,
-  wireshark,
-  x3270-x11,
-  xmobar,
-  xsel,
-  chrony,
-  screen,
-  tigervnc,
-  xdelta,
-  zsh,
-  PackageKit-command-not-found,
-  apt,
-  anaconda*,
-  initial-setup
-)
+# exclude-groups=(
+#   amd-ucode-firmware,
+#   amd-gpu-firmware,
+#   nvidia-gpu-firmware,
+#   chrony,
+#   flatpak,
+#   flatpak-builder,
+#   toolbox,
+#   wine,
+#   wireshark,
+#   x3270-x11,
+#   xmobar,
+#   xsel,
+#   chrony,
+#   screen,
+#   tigervnc,
+#   xdelta,
+#   zsh,
+#   PackageKit-command-not-found,
+#   apt,
+#   anaconda-tui,
+#   initial-setup
+# )
 
-dnf group install -y "${groups[@]}" --with-optional --exclude="${exclude-groups[@]}"
+dnf group install -y "${groups[@]}" --with-optional\
+ --exclude=amd-ucode-firmware,\
+amd-gpu-firmware,\
+nvidia-gpu-firmware,\
+chrony,\
+flatpak,\
+flatpak-builder,\
+toolbox,\
+wine,\
+wireshark,\
+x3270-x11,\
+xmobar,\
+xsel,\
+chrony,\
+screen,\
+tigervnc,\
+xdelta,\
+zsh,\
+PackageKit-command-not-found,\
+apt,\
+anaconda-tui,\
+initial-setup
 
-exclude-kde=(
-  PackageKit-command-not-found,
-  akonadi-*,
-  konsole,
-  ark,
-  fedora-flathub-remote,
-  filelight,
-  kcharselect,
-  kde-connect,
-  kde-partitionmanager,
-  khelpcenter,
-  kio-gdrive,
-  krfb,
-  krdp,
-  kinfocenter,
-  ksshaskpass,
-  kunifiedpush,
-  kwalletmanager5,
-  pam-kwallet,
-  plasma-desktop-doc,
-  plasma-disks,
-  plasma-drkonqi,
-  plasma-systemmonitor,
-  plasma-vault,
-  plasma-welcome,
-  signon-kwallet-extension,
-  toolbox
-)
+# exclude-kde=(
+#   PackageKit-command-not-found,
+#   akonadi-*,
+#   konsole,
+#   ark,
+#   fedora-flathub-remote,
+#   filelight,
+#   kcharselect,
+#   kde-connect,
+#   kde-partitionmanager,
+#   khelpcenter,
+#   kio-gdrive,
+#   krfb,
+#   krdp,
+#   kinfocenter,
+#   ksshaskpass,
+#   kunifiedpush,
+#   kwalletmanager5,
+#   pam-kwallet,
+#   plasma-desktop-doc,
+#   plasma-disks,
+#   plasma-drkonqi,
+#   plasma-systemmonitor,
+#   plasma-vault,
+#   plasma-welcome,
+#   signon-kwallet-extension,
+#   toolbox
+# )
 
-dnf group install -y kde-desktop --exclude="${exclude-kde[@]}"
+dnf group install -y kde-desktop\
+ --exclude=PackageKit-command-not-found,\
+akonadi-*,\
+konsole,\
+ark,\
+fedora-flathub-remote,\
+filelight,\
+kcharselect,\
+kde-connect,\
+kde-partitionmanager,\
+khelpcenter,\
+kio-gdrive,\
+krfb,\
+krdp,\
+kinfocenter,\
+ksshaskpass,\
+kunifiedpush,\
+kwalletmanager5,\
+pam-kwallet,\
+plasma-desktop-doc,\
+plasma-disks,\
+plasma-drkonqi,\
+plasma-systemmonitor,\
+plasma-vault,\
+plasma-welcome,\
+signon-kwallet-extension,\
+toolbox
