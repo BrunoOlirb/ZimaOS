@@ -3,14 +3,17 @@ FROM scratch AS ctx
 COPY --chmod=0755 build-files /
 
 # Base Image
-FROM quay.io/fedora/fedora-kinoite:43
+FROM quay.io/fedora/fedora-kinoite:latest
+
+# Systemd
+COPY systemd/* /etc/systemd/system/
 
 # Build files
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
-    /ctx/setup.sh
+    /ctx/build.sh
 
 # Copy Homebrew files from the brew image and enable
 COPY --from=ghcr.io/ublue-os/brew:latest /system_files /
