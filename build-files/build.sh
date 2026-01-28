@@ -30,6 +30,7 @@ ADD=(
 
 REMOVE=(
   firefox
+  firefox-langpacks
   filelight
   konsole
   khelpcenter
@@ -97,7 +98,7 @@ ENABLE=(
   podman.socket
   nix.mount
   nix-daemon.service
-  #snap.mount
+  snap-home.mount
   snapd.service
 )
 
