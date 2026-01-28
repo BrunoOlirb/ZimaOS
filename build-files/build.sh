@@ -131,7 +131,7 @@ rm /usr/lib/systemd/system/flatpak-add-fedora-repos.service
 ### Nix
 
 dnf in -y nix nix-daemon
-mv nix /var/lib/nix
+mv nix /var/lib/
 
 ### So it won't reboot on Update
 
@@ -141,7 +141,7 @@ sed -i 's|#LockLayering.*|LockLayering=true|' /etc/rpm-ostreed.conf
 
 ### Systemd
 
-ENABLE-SERVICES=(
+ENABLE=(
   sddm.service
   firewalld.service
   bootc-fetch-apply-updates.service
@@ -150,7 +150,7 @@ ENABLE-SERVICES=(
   nix-daemon.service
 )
 
-MASK-SERVICES=(
+MASK=(
   logrotate.timer
   logrotate.service
   rpm-ostree-countme.timer
@@ -159,9 +159,9 @@ MASK-SERVICES=(
   NetworkManager-wait-online.service
 )
 
-systemctl mask "${MASK-SERVICES[@]}"
+systemctl mask "${MASK[@]}"
 
-systemctl enable "${ENABLE-SERVICES[@]}"
+systemctl enable "${ENABLE[@]}"
 
 systemctl set-default graphical.target
 
