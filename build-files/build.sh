@@ -7,8 +7,6 @@ shopt -s nullglob
 ### File system
 
 mkdir -p /var/roothome
-mkdir -p /nix
-mkdir -p /snap
 
 ### Install dnf5 if not installed
 if ! rpm -q dnf5 >/dev/null; then
@@ -76,11 +74,15 @@ rm /usr/lib/systemd/system/flatpak-add-fedora-repos.service
 ### Nix
 
 dnf in -y nix nix-daemon
+
 mv nix /var/lib/
+
+mkdir -p /nix
 
 ### Snapd
 
 dnf in -y snapd
+ln -sf /var/lib/snapd/snap /
 
 ### So it won't reboot on Update
 
@@ -95,7 +97,7 @@ ENABLE=(
   podman.socket
   nix.mount
   nix-daemon.service
-  snap.mount
+  #snap.mount
   snapd.service
 )
 
