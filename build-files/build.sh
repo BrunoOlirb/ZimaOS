@@ -148,18 +148,8 @@ ENABLE=(
   podman.socket
   nix.mount
   nix-daemon.service
+  systemd-resolved.service
 )
-
-MASK=(
-  logrotate.timer
-  logrotate.service
-  rpm-ostree-countme.timer
-  rpm-ostree-countme.service
-  systemd-remount-fs.service
-  NetworkManager-wait-online.service
-)
-
-systemctl mask "${MASK[@]}"
 
 systemctl enable "${ENABLE[@]}"
 
