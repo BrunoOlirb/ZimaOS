@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY --chmod=0755 build-files /
 
 # Base Image
-FROM quay.io/fedora/fedora-bootc:latest
+FROM quay.io/fedora/fedora-kinoite:latest
 
 # Systemd
 COPY systemd/* /etc/systemd/system/

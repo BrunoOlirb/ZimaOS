@@ -8,6 +8,11 @@ shopt -s nullglob
 
 mkdir -p /var/roothome
 
+### Install dnf5 if not installed
+if ! rpm -q dnf5 >/dev/null; then
+    rpm-ostree install dnf5 dnf5-plugins
+fi
+
 ### DNF
 
 echo -n "max_parallel_downloads=10" >>/etc/dnf/dnf.conf
@@ -15,101 +20,39 @@ echo -n "install_weak_deps=False" >>/etc/dnf/dnf.conf
 
 ### Packages
 
-PACKAGES=(
-  ## Groups
-  @core
-  @standard
-  @virtualization
-  @development-tools
-  @fonts
-  @desktop-accessibility
-  @workstation-ostree-support
-
-  ## Hardware
-  alsa-sof-firmware
-  intel-audio-firmware
-  intel-vsc-firmware
-  realtek-firmware
-
-  ## Multimedia
-  alsa-ucm
-  alsa-utils
-  alsa-firmware
-  alsa-sof-firmware
-  alsa-tools-firmware
-  pipewire
-  pipewire-alsa
-  pipewire-config-raop
-  pipewire-gstreamer
-  pipewire-pulseaudio
-  pipewire-utils
-  wireplumber
-  libva-intel-media-driver
-  ffmpeg-free
-  gstreamer1-plugin-dav1d
-  gstreamer1-plugin-libav
-  gstreamer1-plugin-openh264
-  gstreamer1-plugins-bad-free
-  gstreamer1-plugins-good
-  gstreamer1-plugins-ugly-free
-  libopenraw
-  libjxl
-  glx-utils
-
-  ## Network Manager
-  dhcp-client
-  dnsmasq
-  iptables-nft
-  wpa_supplicant
-
-  ## Mesa
-  mesa-dri-drivers
-  mesa-vulkan-drivers
-
-  ## Container
-  podman
+ADD=(
+  kate
   distrobox
-  buildah
-  flatpak
-
-  ## Misc
-  fuse # for appimages
-  firewall-config
-
-  ## Desktop
-  sddm
-  sddm-breeze
-  plasma-desktop
-  plasma-discover
-  plasma-discover-flatpak
-  plasma-nm
-  plasma-breeze
-  breeze-icon-theme
-  ffmpegthumbs
-  ffmpegthumbnailer
-  kde-gtk-config
-  kde-settings-pulseaudio
-  kdegraphics-thumbnailers
-  kdeplasma-addons
-  kdialog
-  phonon-qt6-backend-vlc
-  plasma-pa
-  vlc-plugin-gstreamer
-  sddm-kcm
-  flatpak-kcm
-  dolphin
-  spectacle
-  tkdnd
-
-  ## Applications
   kitty
-
-  ## Terminal
   micro
   wl-clipboard
 )
 
-dnf in -y "${PACKAGES[@]}" --exclude=fedora-flathub-remote
+REMOVE=(
+  firefox
+  filelight
+  konsole
+  khelpcenter
+  kinfocenter
+  kjournaldbrowser
+  kcharselect
+  kde-connect
+  kde-partitionmanager
+  kdebugsettings
+  krfb
+  kfind
+  kwalletmanager
+  plasma-systemmonitor
+  plasma-welcome
+  plasma-welcome-fedora
+  plasma-discover-rpm-ostree
+  toolbox
+  fedora-flathub-remote
+)
+
+dnf in -y "${ADD[@]}"
+
+dnf rm -y "${REMOVE[@]}"
 
 ### From ublue-os main
 dnf5 -y swap --repo='fedora' \
@@ -133,6 +76,10 @@ rm /usr/lib/systemd/system/flatpak-add-fedora-repos.service
 dnf in -y nix nix-daemon
 mv nix /var/lib/
 
+### Snapd
+
+dnf in -y snapd
+
 ### So it won't reboot on Update
 
 sed -i 's|^ExecStart=.*|ExecStart=/usr/bin/bootc update --quiet|' /usr/lib/systemd/system/bootc-fetch-apply-updates.service
@@ -142,18 +89,15 @@ sed -i 's|#LockLayering.*|LockLayering=true|' /etc/rpm-ostreed.conf
 ### Systemd
 
 ENABLE=(
-  sddm.service
-  firewalld.service
   bootc-fetch-apply-updates.service
   podman.socket
   nix.mount
   nix-daemon.service
-  systemd-resolved.service
+  snap.mount
+  snapd.service
 )
 
 systemctl enable "${ENABLE[@]}"
-
-systemctl set-default graphical.target
 
 ### Use CoreOS' generator for emergency/rescue boot
 CSFG=/usr/lib/systemd/system-generators/coreos-sulogin-force-generator
