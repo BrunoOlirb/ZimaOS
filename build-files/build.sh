@@ -107,13 +107,13 @@ PACKAGES=(
   ## Terminal
   micro
   wl-clipboard
-
-  ## From ublue-os main
-  dnf5 -y swap --repo='fedora' \
-    OpenCL-ICD-Loader ocl-icd
 )
 
 dnf in -y "${PACKAGES[@]}" --exclude=fedora-flathub-remote
+
+### From ublue-os main
+dnf5 -y swap --repo='fedora' \
+  OpenCL-ICD-Loader ocl-icd
 
 ### Flathub
 
