@@ -7,6 +7,8 @@ shopt -s nullglob
 ### File system
 
 mkdir -p /var/roothome
+mkdir -p /nix
+mkdir -p /snap
 
 ### Install dnf5 if not installed
 if ! rpm -q dnf5 >/dev/null; then
