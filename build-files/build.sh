@@ -35,7 +35,8 @@ REMOVE=(
   konsole
   khelpcenter
   kinfocenter
-  kjournaldbrowser
+  kjournald
+  kjournald-libs
   kcharselect
   kde-connect
   kde-partitionmanager
