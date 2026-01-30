@@ -98,7 +98,7 @@ ENABLE=(
   podman.socket
   nix.mount
   nix-daemon.service
-  snap-home.mount
+  home.mount
   snapd.service
 )
 
